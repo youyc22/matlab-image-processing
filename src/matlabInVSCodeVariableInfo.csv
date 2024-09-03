@@ -1,0 +1,5 @@
+Name,Value,Class
+fft_result,1x16,double
+imag_part,1x16,double
+input_sequence,1x16,double
+real_part,1x16,double
