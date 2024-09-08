@@ -107,11 +107,16 @@ end
 com_ratio = width * height * 8 / (length(DC_output) + length(AC_output));
 disp(com_ratio);
 
-re_image = decode(DC_output, AC_output, width, height, QTAB, DCTAB, ACTAB);
+[re_image,re_info] = decode_find_4(DC_output, AC_output, width, height, QTAB, DCTAB, ACTAB);
+accuracy=length(find(re_info==info_in))/(w*h);
+disp(accuracy);
 
 MSE = sum(sum((double(hall_gray) - double(re_image)).^2)) / (width * height);
 PSNR = 10 * log10(255^2 / MSE);
-disp(PSNR);
+
+fprintf("压缩比：%f\n",com_ratio);
+fprintf("准确率：%f%%\n",accuracy*100);
+fprintf("PSNR：%f\n",PSNR);
 
 subplot(1,2,1);
 imshow(hall_gray);

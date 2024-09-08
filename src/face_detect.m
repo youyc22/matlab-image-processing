@@ -158,7 +158,7 @@ function img_out = face_detect(img_in, v, L, threshold, h_step, w_step, h_unit,w
                 right_end = rectangles(r, 3) * w_step;
                 
                 draw_rectangle(top_start : bottom_end, ...
-                left_start : left_start + line_width) = true;
+                 left_start : left_start + line_width) = true;
                 draw_rectangle(top_start : top_start + line_width, left_start: right_end) = true;
                 draw_rectangle(top_start: bottom_end, max(1, right_end - line_width) : right_end) = true;
                 draw_rectangle(max(1, bottom_end - line_width) : bottom_end, left_start : right_end) = true;

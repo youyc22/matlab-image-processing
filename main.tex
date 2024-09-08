@@ -542,13 +542,7 @@ ac解码：
     \includegraphics[width=0.4\linewidth]{3_1_2.png}
     \caption{准确率}
 \end{figure}
-看到准确率在0.5左右，而我们的信息都是0或1，说明信息几乎没有被保留，我们继续用全1信息测试：
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\linewidth]{3_1_1.png}
-    \caption{全1数据准确率}
-\end{figure}
-准确率不足一半，说明几乎没有保留信息\\
+看到准确率在0.5左右，而我们的信息都是0或1，说明信息几乎没有被保留；
 \hspace*{2em}原因在于我们在空域隐藏信息时只修改了最低位，而量化过程会将这部分信息丢失，反量化后无法获取原来的信息，因此空域隐藏抗JPEG编码能力很低
 
 \subsection{变换域隐藏信息}
@@ -567,7 +561,13 @@ ac解码：
     \caption{原图及复原图}
 \end{figure}
 
-压缩比为2.8680，PSNR为15.4239dB
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{3_2_1_0.png}
+    \caption{结果}
+\end{figure}
+
+信息恢复准确率为100\%，压缩比为2.8646，PSNR为15.4383dB
 
 \subsubsection{信息隐藏在部分系数的最低位}
 
@@ -594,7 +594,13 @@ ac解码：
     \caption{原图及复原图}
 \end{figure}
 
-压缩比和PSNR分别为3.3907和17.7512dB\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{3_2_2_1_0.png}
+    \caption{结果}
+\end{figure}
+
+信息恢复准确率为100\%，压缩比为3.3788，PSNR为17.7411dB\\
 \subsubsubsection{挑选量化系数矩阵中较小的一半，在对应的位置处替换信息位}
 
 实现代码：
@@ -629,7 +635,14 @@ ac解码：
     \caption{原图及复原图}
 \end{figure}
 
-压缩比和PSNR分别为4.4161和23.3408dB\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{3_2_2_2_0.png}
+    \caption{结果}
+\end{figure}
+
+信息恢复准确率为100\%，压缩比为4.4161，PSNR为23.3408dB\\
+
 可以看到隐藏同等信息量的情况下，方案二的压缩比和PSNR都更优秀，说明方案二更适合信息隐藏
 
 \subsubsection{信息隐藏在最后一个非零位之后}
@@ -658,7 +671,13 @@ ac解码：
     \caption{原图及复原图}
 \end{figure}
 
-压缩比和PSNR分别为6.1916和28.8776dB \\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{3_2_3_1_0.png}
+    \caption{结果}
+\end{figure}
+
+信息恢复准确率为100\%，压缩比为6.1916，PSNR为28.9463dB\\
 
 这里我们继续应用方案二，保证隐藏信息量相同（设置ratio为64）的情况下比较效果：
 \begin{figure}[H]
@@ -667,7 +686,14 @@ ac解码：
     \caption{原图及复原图}
 \end{figure}
 
-压缩比和PSNR分别为6.3982和31.1279dB \\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{3_2_3_2_0.png}
+    \caption{结果}
+\end{figure}
+
+信息恢复准确率为100\%，压缩比为6.3904，PSNR为31.1312dB\\
+
 \hspace*{2em}压缩比和PSNR均大于方案三，说明此方案更适合信息隐藏
 
 \subsubsection{总结比较}
@@ -675,19 +701,19 @@ ac解码：
 效果对比如下：
 \begin{table}[H]
     \centering
-    \begin{tabular}{|c|c|c|}
+    \begin{tabular}{|c|c|c|c|}
     \hline
-    方案 & 压缩比 & PSNR/dB  \\
+    方案 & 压缩比 & PSNR/dB & 准确率/\%  \\
     \hline
-    替换所有系数 & 2.8680 & 15.4239  \\
+    替换所有系数 & 2.8646 & 15.4383 & 100 \\
     \hline
-    顺序每两个系数替换一个信息位 & 3.3907 & 17.7512  \\
+    顺序每两个系数替换一个信息位 & 3.3788 & 17.7411 & 100 \\
     \hline
-    选取较小的一半系数替换信息位 & 4.4161 & 23.3408  \\
+    选取较小的一半系数替换信息位 & 4.4161 & 23.3408 & 100\\
     \hline
-    信息隐藏在最后一个非零位之后 & 6.1916 & 28.8776  \\
+    信息隐藏在最后一个非零位之后 & 6.1916 & 28.9463 & 100\\
     \hline
-    选取最小的系数替换信息位 & 6.3982 & 31.1279  \\
+    选取最小的系数替换信息位 & 6.3904 & 31.1312 & 100 \\
     \hline
     \end{tabular}
 \end{table}

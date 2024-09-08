@@ -19,8 +19,8 @@ for i = 1:h
     end
 end
 
-ratio = 2;
-indices = find_bigger_ones(QTAB, ratio);
+ratio = 64;
+indices = find_smaller_ones(QTAB, ratio);
 info_num = width * height / ratio ;
 info_in = dec2bin(randi([0,1],info_num,1));
 
@@ -98,13 +98,16 @@ for k = 1 : w*h
 end
 
 com_ratio = width * height * 8 / (length(DC_output) + length(AC_output));
-disp(com_ratio);
 
-re_image = decode(DC_output, AC_output, width, height, QTAB, DCTAB, ACTAB);
+[re_image,re_info] = decode_find_3(DC_output, AC_output, width, height, QTAB, DCTAB, ACTAB,ratio,indices);
+accuracy=length(find(re_info==info_in))/info_num;
 
 MSE = sum(sum((double(hall_gray) - double(re_image)).^2)) / (width * height);
 PSNR = 10 * log10(255^2 / MSE);
-disp(PSNR);
+
+fprintf("压缩比：%f\n",com_ratio);
+fprintf("准确率：%f%%\n",accuracy*100);
+fprintf("PSNR：%f\n",PSNR);
 
 subplot(1,2,1);
 imshow(hall_gray);
